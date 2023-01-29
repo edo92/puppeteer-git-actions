@@ -1,0 +1,45 @@
+name: Chrome
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+env:
+  BROWSER_PRODUCT: chrome
+
+jobs:
+  Chrome:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore cached Primes
+        id: cache-primes-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: node-modules-1${{ hashFiles('package.json') }}
+
+      - name: Install & Build
+        run: |
+          npm install
+
+      - name: Save Primes
+        id: cache-primes-save
+        uses: actions/cache/save@v3
+        with:
+          path: node_modules
+          key: node-modules-1${{ hashFiles('package.json') }}
+
+      - name: Test
+        run: |
+          npm run test
+        env:
+          PUPPETEER_PRODUCT: chrome
