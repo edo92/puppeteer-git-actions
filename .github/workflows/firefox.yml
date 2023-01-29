@@ -20,13 +20,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Restore cached Primes
-        id: cache-primes-restore
-        uses: actions/cache/restore@v3
-        with:
-          path: node_modules
-          key: node-modules-1${{ hashFiles('package.json') }}
-
       - name: Install & Build & Test
         run: |
           npm install
