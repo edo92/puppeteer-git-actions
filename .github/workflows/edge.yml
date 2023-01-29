@@ -1,0 +1,26 @@
+name: Edge
+
+on:
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  edge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install & Build
+        run: |
+          npm install
+          # npm run build
+
+      - name: Install Edge
+        uses: browser-actions/setup-edge@v1
+
+      - name: Test
+        run: |
+          npm run test
+        env:
+          BROWSER_PRODUCT: edge
