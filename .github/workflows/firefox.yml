@@ -1,0 +1,35 @@
+name: Firefox
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch:
+
+env:
+  BROWSER_PRODUCT: firefox
+
+jobs:
+  Firefox:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore cached Primes
+        id: cache-primes-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: node_modules
+          key: node-modules-1${{ hashFiles('package.json') }}
+
+      - name: Install & Build & Test
+        run: |
+          npm install
+          npm run test
+        env:
+          PUPPETEER_PRODUCT: firefox
